@@ -5,7 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [javax.servlet/servlet-api "2.5"]
-                 [ring/ring "1.5.0"]]
+                 [ring/ring "1.5.0"]
+                 [compojure "1.5.1"]]
   :main webdev.core
   :profiles {:dev
              {:main webdev.core/-dev-main}})
