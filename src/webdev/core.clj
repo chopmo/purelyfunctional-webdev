@@ -33,7 +33,7 @@
              ":" /}
         a (Integer. (get-in req [:route-params :operand1]))
         b (Integer. (get-in req [:route-params :operand2]))
-        op (ops (eval (get-in req [:route-params :operator])))]
+        op (ops (get-in req [:route-params :operator]))]
   (if op
     {:status 200
      :body (str (op a b))
