@@ -6,7 +6,9 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [javax.servlet/servlet-api "2.5"]
                  [ring/ring "1.5.0"]
-                 [compojure "1.5.1"]]
+                 [compojure "1.5.1"]
+                 [org.clojure/java.jdbc "0.6.2-alpha2"]
+                 [postgresql/postgresql "9.1-901-1.jdbc4"]]
   :min-lein-version "2.0.0"
   :uberjar-name "webdev.jar"
   :main webdev.core
