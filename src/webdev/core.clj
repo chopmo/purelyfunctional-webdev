@@ -27,17 +27,20 @@
      :headers {}}))
 
 (defn calc [req]
-  (let [o1 (Integer. (get-in req [:route-params :operand1]))
-        o2 (Integer. (get-in req [:route-params :operand2]))
-        op (eval (get-in req [:route-params :operator]))
-        result (case op
-                 "+" (+ o1 o2)
-                 "-" (- o1 o2)
-                 "*" (* o1 o2)
-                 ":" (/ o1 o2))]
+  (let [ops {"+" +
+             "-" -
+             "*" *
+             ":" /}
+        a (Integer. (get-in req [:route-params :operand1]))
+        b (Integer. (get-in req [:route-params :operand2]))
+        op (ops (eval (get-in req [:route-params :operator])))]
+  (if op
     {:status 200
-     :body (str result)
-     :headers {}}))
+     :body (str (op a b))
+     :headers {}}
+    {:status 404
+     :body "Page not found"
+     :headers {}})))
 
 (defroutes app
   (GET "/" [] greet)
