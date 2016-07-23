@@ -46,6 +46,10 @@
      :body "Page not found"
      :headers {}})))
 
+(defn wrap-db [hdlr]
+  (fn [req]
+    (hdlr (assoc req :webdev/db db))))
+
 (defroutes routes
   (GET "/" [] greet)
   (GET "/about" [] about)
@@ -56,7 +60,9 @@
   (not-found "Page not found"))
 
 (def app
-  (wrap-params routes))
+  (wrap-db
+   (wrap-params
+    routes)))
 
 
 (defn -main [port]
