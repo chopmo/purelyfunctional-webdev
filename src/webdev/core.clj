@@ -3,7 +3,7 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
-            [clojure.pprint :refer [pprint]]))
+            [ring.handler.dump :refer [handle-dump]]))
 
 (defn greet [req]
   {:status 200
@@ -20,16 +20,11 @@
    :body "Created by Jacob Tjoernholm while learning about web development in Clojure using the Purely Functional lessons by Eric Normand (purelyfunctional.tv)"
    :headers {}})
 
-(defn request [req]
-  {:status 200
-   :body (with-out-str (pprint req))
-   :header {}})
-
 (defroutes app
   (GET "/" [] greet)
   (GET "/about" [] about)
   (GET "/goodbye" [] goodbye)
-  (GET "/request" [] request)
+  (GET "/request" [] handle-dump)
   (not-found "Page not found"))
 
 (defn -main [port]
