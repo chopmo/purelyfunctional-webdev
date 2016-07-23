@@ -21,9 +21,10 @@
    :headers {}})
 
 (defn yo [req]
-  {:status 200
-   :body (str "Yo! " (:name (:route-params req)) "!")
-   :headers {}})
+  (let [name (get-in req [:route-params :name])]
+    {:status 200
+     :body (str "Yo! " name "!")
+     :headers {}}))
 
 (defroutes app
   (GET "/" [] greet)
