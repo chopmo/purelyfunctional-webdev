@@ -46,10 +46,6 @@
      :body "Page not found"
      :headers {}})))
 
-(defn wrap-db [hdlr]
-  (fn [req]
-    (hdlr (assoc req :webdev/db db))))
-
 (defroutes routes
   (GET "/" [] greet)
   (GET "/about" [] about)
@@ -59,10 +55,20 @@
   (GET "/yo/:name" [] yo)
   (not-found "Page not found"))
 
+(defn wrap-db [hdlr]
+  (fn [req]
+    (hdlr (assoc req :webdev/db db))))
+
+(defn wrap-server [hdlr]
+  (fn [req]
+    (let [response (hdlr req)]
+      (assoc-in response [:headers "Server"] "BFG 9000"))))
+
 (def app
-  (wrap-db
-   (wrap-params
-    routes)))
+  (wrap-server
+   (wrap-db
+    (wrap-params
+     routes))))
 
 
 (defn -main [port]
