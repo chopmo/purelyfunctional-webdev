@@ -1,5 +1,7 @@
 (ns webdev.core
-  (:require [webdev.item.model :as items])
+  (:require [webdev.item.model :as items]
+            [webdev.item.handler :refer [handle-index-items
+                                         handle-create-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -51,8 +53,10 @@
   (GET "/about" [] about)
   (GET "/calc/:operand1/:operator/:operand2" [] calc)
   (GET "/goodbye" [] goodbye)
-  (GET "/request" [] handle-dump)
   (GET "/yo/:name" [] yo)
+  (GET "/items" [] handle-index-items)
+  (POST "/items" [] handle-create-item)
+  (ANY "/request" [] handle-dump)
   (not-found "Page not found"))
 
 (defn wrap-db [hdlr]
