@@ -20,11 +20,17 @@
    :body "Created by Jacob Tjoernholm while learning about web development in Clojure using the Purely Functional lessons by Eric Normand (purelyfunctional.tv)"
    :headers {}})
 
+(defn yo [req]
+  {:status 200
+   :body (str "Yo! " (:name (:route-params req)) "!")
+   :headers {}})
+
 (defroutes app
   (GET "/" [] greet)
   (GET "/about" [] about)
   (GET "/goodbye" [] goodbye)
   (GET "/request" [] handle-dump)
+  (GET "/yo/:name" [] yo)
   (not-found "Page not found"))
 
 (defn -main [port]
