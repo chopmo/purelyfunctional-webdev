@@ -11,12 +11,18 @@
 
 (defn goodbye [req]
   {:status 200
-                :body "Goodbye cruel world"
-                :headers {}})
+   :body "Goodbye cruel world"
+   :headers {}})
+
+(defn about [req]
+  {:status 200
+   :body "Created by Jacob Tjoernholm while learning about web development in Clojure using the Purely Functional lessons by Eric Normand (purelyfunctional.tv)"
+   :headers {}})
 
 (defroutes app
   (GET "/" [] greet)
   (GET "/goodbye" [] goodbye)
+  (GET "/about" [] about)
   (not-found "Page not found"))
 
 (defn -main [port]
