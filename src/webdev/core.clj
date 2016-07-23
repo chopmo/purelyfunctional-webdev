@@ -26,9 +26,23 @@
      :body (str "Yo! " name "!")
      :headers {}}))
 
+(defn calc [req]
+  (let [o1 (Integer. (get-in req [:route-params :operand1]))
+        o2 (Integer. (get-in req [:route-params :operand2]))
+        op (eval (get-in req [:route-params :operator]))
+        result (case op
+                 "+" (+ o1 o2)
+                 "-" (- o1 o2)
+                 "*" (* o1 o2)
+                 ":" (/ o1 o2))]
+    {:status 200
+     :body (str result)
+     :headers {}}))
+
 (defroutes app
   (GET "/" [] greet)
   (GET "/about" [] about)
+  (GET "/calc/:operand1/:operator/:operand2" [] calc)
   (GET "/goodbye" [] goodbye)
   (GET "/request" [] handle-dump)
   (GET "/yo/:name" [] yo)
