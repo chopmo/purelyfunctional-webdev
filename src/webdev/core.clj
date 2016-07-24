@@ -1,7 +1,8 @@
 (ns webdev.core
   (:require [webdev.item.model :as items]
             [webdev.item.handler :refer [handle-index-items
-                                         handle-create-item]])
+                                         handle-create-item
+                                         handle-delete-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -58,6 +59,7 @@
   (GET "/yo/:name" [] yo)
   (GET "/items" [] handle-index-items)
   (POST "/items" [] handle-create-item)
+  (DELETE "/items/:id" [] handle-delete-item)
   (ANY "/request" [] handle-dump)
   (not-found "Page not found"))
 
@@ -70,13 +72,25 @@
     (let [response (hdlr req)]
       (assoc-in response [:headers "Server"] "BFG 9000"))))
 
+(def sim-methods
+  {"POST" :post
+   "DELETE" :delete})
+
+(defn wrap-simulated-methods [hdlr]
+  (fn [req]
+    (if-let [method (and (= :post (:request-method req))
+                         (sim-methods (get-in req [:form-params "_method"])))]
+      (hdlr (assoc req :request-method method))
+      (hdlr req))))
+
 (def app
   (wrap-server
    (wrap-file-info
     (wrap-resource
      (wrap-db
       (wrap-params
-       routes))
+       (wrap-simulated-methods
+        routes)))
      "static"))))
 
 

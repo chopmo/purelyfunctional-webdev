@@ -27,6 +27,16 @@
             {:type :submit
              :value "New item"}]]]]))
 
+(defn delete-item-form [id]
+  (html
+   [:form {:method "POST" :action (str "/items/" id)}
+    [:input {:type :hidden
+             :name "_method"
+             :value "DELETE"}]
+    [:div.btn-group
+     [:input.btn.btn-danger.btn-xs
+      {:type :submit
+       :value "Delete"}]]]))
 
 (defn items-page [items]
   (html5 {:lang "en"}
@@ -45,12 +55,14 @@
                 [:thead
                  [:tr
                   [:th "Name"]
-                  [:th "Description"]]]
+                  [:th "Description"]
+                  [:th.col-sm-2]]]
                 [:tbody
                  (for [i items]
                    [:tr
                     [:td (:name i)]
-                    [:td (:description i)]])]]
+                    [:td (:description i)]
+                    [:td (delete-item-form (:id i))]])]]
                [:div.col-sm-offset-1 "There are no items"])]
             [:div.col-sm-6
              [:h2 "Create a new item"]
