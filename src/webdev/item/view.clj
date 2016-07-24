@@ -38,6 +38,22 @@
       {:type :submit
        :value "Delete"}]]]))
 
+(defn update-item-form [item]
+  (html
+   (let [checked? (:checked item)]
+     [:form {:method "POST" :action (str "/items/" (:id item))}
+      [:input {:type :hidden
+               :name "_method"
+               :value "PUT"}]
+      [:input {:type :hidden
+               :name "checked"
+               :value (if checked? "false" "true")}]
+      [:div.btn-group
+       [:input
+        {:type :submit
+         :class (apply str (interpose " " (conj ["btn" "btn-xs" (if checked? "btn-success" "btn-warning")])))
+         :value (if checked? "Checked" "Unchecked")}]]])))
+
 (defn items-page [items]
   (html5 {:lang "en"}
          [:head
@@ -62,7 +78,8 @@
                    [:tr
                     [:td (delete-item-form (:id i))]
                     [:td (:name i)]
-                    [:td (:description i)]])]]
+                    [:td (:description i)]
+                    [:td (update-item-form i)]])]]
                [:div.col-sm-offset-1 "There are no items"])]
             [:div.col-sm-6
              [:h2 "Create a new item"]
