@@ -32,3 +32,16 @@
       {:status 404
        :headers {}
        :body "Item not found"})))
+
+(defn handle-update-item [req]
+  (let [db (:webdev/db req)
+        item-id (java.util.UUID/fromString (get-in req [:route-params :id]))
+        checked? (Boolean. (get-in req [:form-params "checked"]))
+        exists? (update-item db item-id checked?)]
+    (if exists?
+      {:status 302
+       :headers {"Location" "/items"}
+       :body ""}
+      {:status 404
+       :headers {}
+       :body "Item not found"})))
