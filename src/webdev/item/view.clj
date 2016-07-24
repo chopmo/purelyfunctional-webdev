@@ -54,15 +54,15 @@
                [:table.table.table.striped
                 [:thead
                  [:tr
+                  [:th.col-sm-2]
                   [:th "Name"]
-                  [:th "Description"]
-                  [:th.col-sm-2]]]
+                  [:th "Description"]]]
                 [:tbody
                  (for [i items]
                    [:tr
+                    [:td (delete-item-form (:id i))]
                     [:td (:name i)]
-                    [:td (:description i)]
-                    [:td (delete-item-form (:id i))]])]]
+                    [:td (:description i)]])]]
                [:div.col-sm-offset-1 "There are no items"])]
             [:div.col-sm-6
              [:h2 "Create a new item"]
