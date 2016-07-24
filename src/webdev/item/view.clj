@@ -38,6 +38,9 @@
       {:type :submit
        :value "Delete"}]]]))
 
+(defn css-class-list [& args]
+  (apply str (interpose " " args)))
+
 (defn update-item-form [item]
   (html
    (let [checked? (:checked item)]
@@ -47,11 +50,13 @@
                :value "PUT"}]
       [:input {:type :hidden
                :name "checked"
-               :value (if checked? "false" "true")}]
+               :value (str (not checked?))}]
       [:div.btn-group
        [:input
         {:type :submit
-         :class (apply str (interpose " " (conj ["btn" "btn-xs" (if checked? "btn-success" "btn-warning")])))
+         :class (css-class-list "btn"
+                                "btn-xs"
+                                (if checked? "btn-success" "btn-warning"))
          :value (if checked? "Checked" "Unchecked")}]]])))
 
 (defn items-page [items]
