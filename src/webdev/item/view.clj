@@ -41,23 +41,22 @@
 (defn css-class-list [& args]
   (apply str (interpose " " args)))
 
-(defn update-item-form [item]
+(defn update-item-form [id checked]
   (html
-   (let [checked? (:checked item)]
-     [:form {:method "POST" :action (str "/items/" (:id item))}
-      [:input {:type :hidden
-               :name "_method"
-               :value "PUT"}]
-      [:input {:type :hidden
-               :name "checked"
-               :value (str (not checked?))}]
-      [:div.btn-group
-       [:input
-        {:type :submit
-         :class (css-class-list "btn"
-                                "btn-xs"
-                                (if checked? "btn-success" "btn-warning"))
-         :value (if checked? "Checked" "Unchecked")}]]])))
+   [:form {:method "POST" :action (str "/items/" id)}
+    [:input {:type :hidden
+             :name "_method"
+             :value "PUT"}]
+    [:input {:type :hidden
+             :name "checked"
+             :value (str (not checked))}]
+    [:div.btn-group
+     [:input
+      {:type :submit
+       :class (css-class-list "btn"
+                              "btn-xs"
+                              (if checked "btn-success" "btn-warning"))
+       :value (if checked "Checked" "Unchecked")}]]]))
 
 (defn items-page [items]
   (html5 {:lang "en"}
@@ -84,7 +83,7 @@
                     [:td (delete-item-form (:id i))]
                     [:td (:name i)]
                     [:td (:description i)]
-                    [:td (update-item-form i)]])]]
+                    [:td (update-item-form (:id i) (:checked i))]])]]
                [:div.col-sm-offset-1 "There are no items"])]
             [:div.col-sm-6
              [:h2 "Create a new item"]
