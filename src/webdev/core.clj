@@ -18,11 +18,6 @@
          (System/getenv "DATABASE_URL")
          "jdbc:postgresql://localhost/webdev?user=postgres&password=postgres"))
 
-(defn greet [req]
-  {:status 200
-   :body "Hello world2"
-   :headers {}})
-
 (defn goodbye [req]
   {:status 200
    :body "Goodbye cruel world"
