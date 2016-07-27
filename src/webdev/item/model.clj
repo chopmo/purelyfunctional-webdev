@@ -9,17 +9,19 @@
    db
    ["CREATE TABLE IF NOT EXISTS items
        (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        list TEXT NOT NULL,
         name TEXT NOT NULL,
         description TEXT NOT NULL,
         checked BOOLEAN NOT NULL DEFAULT FALSE,
         date_created TIMESTAMPTZ NOT NULL DEFAULT now())"]))
 
-(defn create-item [db name description]
+(defn create-item [db list name description]
   (:id (first (db/query
                db
-               ["INSERT INTO items (name, description)
-                 VALUES (?, ?)
+               ["INSERT INTO items (list, name, description)
+                 VALUES (?, ?, ?)
                  RETURNING id"
+                list
                 name
                 description]))))
 
@@ -40,9 +42,20 @@
             WHERE id = ?"
            id])))
 
-(defn read-items [db]
+(defn read-items [db list]
   (db/query
    db
-   ["SELECT id, name, description, checked, date_created
+   ["SELECT id, list, name, description, checked, date_created
      FROM items
-     ORDER BY date_created"]))
+     WHERE list = ?
+     ORDER BY date_created"
+    list]))
+
+(defn read-item [db id]
+  (first
+   (db/query
+    db
+    ["SELECT id, list, name, description, checked, date_created
+      FROM items
+      WHERE id = ?"
+     id])))

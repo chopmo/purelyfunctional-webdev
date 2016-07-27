@@ -1,6 +1,7 @@
 (ns webdev.item.handler
   (:require [webdev.item.model :refer [create-item
                                        read-items
+                                       read-item
                                        update-item
                                        delete-item]]
             [webdev.item.view :refer [frontpage
@@ -13,27 +14,29 @@
 
 (defn handle-index-items [req]
   (let [db (:webdev/db req)
-        items (read-items db)]
+        list (get-in req [:route-params :list])
+        items (read-items db list)]
     {:status 200
      :headers {}
-     :body (items-page items)}))
+     :body (items-page items list)}))
 
 (defn handle-create-item [req]
   (let [name (get-in req [:params "name"])
         description (get-in req [:params "description"])
         db (:webdev/db req)
-        item-id (create-item db name description)]
+        list (get-in req [:route-params :list])
+        item-id (create-item db list name description)]
     {:status 302
-     :headers {"Location" "/items"}
+     :headers {"Location" (str "/items/" list)}
      :body ""}))
 
 (defn handle-delete-item [req]
   (let [db (:webdev/db req)
         item-id (java.util.UUID/fromString (get-in req [:route-params :id]))
-        exists? (delete-item db item-id)]
-    (if exists?
+        item (read-item db item-id)]
+    (if (and item (delete-item db item-id))
       {:status 302
-       :headers {"Location" "/items"}
+       :headers {"Location" (str "/items/" (:list item))}
        :body ""}
       {:status 404
        :headers {}
@@ -42,11 +45,11 @@
 (defn handle-update-item [req]
   (let [db (:webdev/db req)
         item-id (java.util.UUID/fromString (get-in req [:route-params :id]))
-        checked? (Boolean. (get-in req [:form-params "checked"]))
-        exists? (update-item db item-id checked?)]
-    (if exists?
+        item (read-item db item-id)
+        checked? (Boolean. (get-in req [:form-params "checked"]))]
+    (if (and item (update-item db item-id checked?))
       {:status 302
-       :headers {"Location" "/items"}
+       :headers {"Location" (str "/items/" (:list item))}
        :body ""}
       {:status 404
        :headers {}

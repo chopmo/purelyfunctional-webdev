@@ -14,9 +14,9 @@
     [:li [:a {:href "/items"} "TODO app"]]
     ]))
 
-(defn new-item []
+(defn new-item [list]
   (html [:form.form-horizontal
-         {:method "POST" :action "/items"}
+         {:method "POST" :action (str "/items/" list)}
          [:div.form-group
           [:label.control-label.col-sm-2 {:for :name-input}
            "Name"]
@@ -68,7 +68,7 @@
                               (if checked "btn-success" "btn-warning"))
        :value (if checked "Checked" "Unchecked")}]]]))
 
-(defn items-page [items]
+(defn items-page [items list]
   (html5 {:lang "en"}
          [:head
           [:title "BFG 9000 TODO list"]
@@ -97,6 +97,6 @@
                [:div.col-sm-offset-1 "There are no items"])]
             [:div.col-sm-6
              [:h2 "Create a new item"]
-             (new-item)]]
+             (new-item list)]]
            [:script {:src "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
            [:script {:src "/bootstrap/js/bootstrap.min.js"}]]]))
