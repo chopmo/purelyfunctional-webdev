@@ -2,6 +2,8 @@
   (:require [webdev.item.model :as items]
             [webdev.item.handler :refer [handle-frontpage
                                          handle-index-items
+                                         handle-index-lists
+                                         handle-create-list
                                          handle-create-item
                                          handle-delete-item
                                          handle-update-item]])
@@ -56,6 +58,8 @@
   (GET "/calc/:operand1/:operator/:operand2" [] calc)
   (GET "/goodbye" [] goodbye)
   (GET "/yo/:name" [] yo)
+  (POST "/lists" [] handle-create-list)
+  (GET "/items" [] handle-index-lists)
   (GET "/items/:list" [] handle-index-items)
   (POST "/items/:list" [] handle-create-item)
   (DELETE "/items/:id" [] handle-delete-item)

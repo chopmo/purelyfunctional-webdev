@@ -59,3 +59,8 @@
       FROM items
       WHERE id = ?"
      id])))
+
+(defn read-lists [db]
+  (db/query
+   db
+   ["SELECT list FROM items"]))

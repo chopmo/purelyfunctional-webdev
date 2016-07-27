@@ -100,3 +100,36 @@
              (new-item list)]]
            [:script {:src "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
            [:script {:src "/bootstrap/js/bootstrap.min.js"}]]]))
+
+(defn lists-page [lists]
+  (html5 {:lang "en"}
+         [:head
+          [:title "BFG 9000 TODO lists"]
+          [:meta {:name :viewport
+                  :content "width=device-width, initial-scale=1.0"}]
+          [:link {:href "/bootstrap/css/bootstrap.min.css"
+                  :rel :stylesheet}]
+          [:body
+           [:h1 "Existing TODO lists"]
+           (if (seq lists)
+             [:ul
+              (for [list (map :list lists)]
+                [:li
+                 [:a {:href (str "/items/" list)} list]])]
+             [:div.col-sm
+              [:em "There are no lists"]])
+
+           [:form.form-horizontal
+            {:method "POST"
+             :action "/lists"}
+            [:div.form-group
+             [:div.col-sm.col-sm-10
+              [:input
+               {:type :text
+                :placeholder "New list name"
+                :name "list"}]]]
+            [:div.form-group
+             [:div.col-sm.col-sm-10
+              [:input.btn.btn-primary
+               {:type :submit
+                :value "New list"}]]]]]]))

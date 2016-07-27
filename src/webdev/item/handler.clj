@@ -1,16 +1,31 @@
 (ns webdev.item.handler
   (:require [webdev.item.model :refer [create-item
+                                       read-lists
                                        read-items
                                        read-item
                                        update-item
                                        delete-item]]
             [webdev.item.view :refer [frontpage
-                                      items-page]]))
+                                      items-page
+                                      lists-page]]))
 
 (defn handle-frontpage [req]
   {:status 200
    :headers {}
    :body (frontpage)})
+
+(defn handle-index-lists [req]
+  (let [db (:webdev/db req)
+        lists (read-lists db)]
+    {:status 200
+     :headers {}
+     :body (lists-page lists)}))
+
+(defn handle-create-list [req]
+  (let [list (get-in req [:form-params "list"])]
+    {:status 302
+     :headers {"Location" (str "/items/" list)}
+     :body ""}))
 
 (defn handle-index-items [req]
   (let [db (:webdev/db req)
