@@ -3,6 +3,16 @@
             [hiccup.core :refer [html h]
              ]))
 
+(defn frontpage []
+  (html
+   [:h1 "Cljweb practice app"]
+   [:ul
+    [:li [:a {:href "/about"} "About"]]
+    [:li [:a {:href "/calc/2/+/2"} "Calculator"]]
+    [:li [:a {:href "/goodbye"} "Goodbye"]]
+    [:li [:a {:href "/yo/Jacob"} "Greeter"]]
+    [:li [:a {:href "/items"} "TODO app"]]
+    ]))
 
 (defn new-item []
   (html [:form.form-horizontal

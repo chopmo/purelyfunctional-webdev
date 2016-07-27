@@ -1,6 +1,7 @@
 (ns webdev.core
   (:require [webdev.item.model :as items]
-            [webdev.item.handler :refer [handle-index-items
+            [webdev.item.handler :refer [handle-frontpage
+                                         handle-index-items
                                          handle-create-item
                                          handle-delete-item
                                          handle-update-item]])
@@ -55,7 +56,7 @@
      :headers {}})))
 
 (defroutes routes
-  (GET "/" [] greet)
+  (GET "/" [] handle-frontpage)
   (GET "/about" [] about)
   (GET "/calc/:operand1/:operator/:operand2" [] calc)
   (GET "/goodbye" [] goodbye)
